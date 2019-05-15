@@ -3,3 +3,4 @@ Flask-WTF
 peewee
 GitHub-Flask
 PyGithub
+Flask-Bootstrap4
