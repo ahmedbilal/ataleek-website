@@ -1,18 +1,20 @@
 # TODO:
 #       - use environment variables before uploading it anywhere
-#       - remove MyGithub class
 #       - remove my own access token from index()
 
-from urllib.parse import urljoin
+import json
+import os
+from datetime import datetime
 from functools import reduce
+from urllib.parse import urljoin
 
+import requests
 from flask import (Flask, render_template, request,
                    url_for, flash, redirect, session,
                    g)
 from flask_bootstrap import Bootstrap
 from flask_github import GitHub
 from github import Github as Github2
-from datetime import datetime
 
 from forms import CreateProjectForm, SubmitSolutionForm
 from helpers import (Navigation, login_required,
@@ -20,25 +22,33 @@ from helpers import (Navigation, login_required,
                      Project, Comment, github_repo_ls,
                      get_username_and_repo)
 from models import User, Solution, Mentor
-import json
-import requests
 
 nav = Navigation()
 nav.add("index", "Home", "/")
 nav.add("add_project", "Add a Project", "/add-project")
 nav.add("projects", "Projects", "/projects")
 nav.add("submit_solution", "Submit Solution", "/submit-solution")
+
 # Constants
 ABK_ACCESS_TOKEN = "41168124b046fbd6485d78ac2f65a41187ef304d"
 ADMIN = "ahmedbilal"
 
+environment_status = os.getenv("environment")
 
-def configure_app(_app):
-    _app.config['GITHUB_CLIENT_ID'] = '3c465736912b5ed0c14f'
-    _app.config['GITHUB_CLIENT_SECRET'] = '4aaf9c47b21192af51b8f1b5430d53ef3aa58324'
-    _app.config["SECRET_KEY"] = "hello"
-    _app.config["RECAPTCHA_PUBLIC_KEY"] = "6Ldvd94SAAAAAIlZcypMyY7EoSwkvf9bWW-cp5o6"
-    _app.config["RECAPTCHA_PRIVATE_KEY"] = "6Ldvd94SAAAAADQ6e-pS_lEfgfyA6Zfe-kDCZFki"
+if environment_status == "cloud":
+    def configure_app(_app):
+        _app.config['GITHUB_CLIENT_ID'] = 'ee6f0a5e76b99a909c75'
+        _app.config['GITHUB_CLIENT_SECRET'] = 'b876e39b1b6fa85180e03f19025fcf8cf41bfc71'
+        _app.config["SECRET_KEY"] = "hello"
+        _app.config["RECAPTCHA_PUBLIC_KEY"] = "6Ldvd94SAAAAAIlZcypMyY7EoSwkvf9bWW-cp5o6"
+        _app.config["RECAPTCHA_PRIVATE_KEY"] = "6Ldvd94SAAAAADQ6e-pS_lEfgfyA6Zfe-kDCZFki"
+else:
+    def configure_app(_app):
+        _app.config['GITHUB_CLIENT_ID'] = '3c465736912b5ed0c14f'
+        _app.config['GITHUB_CLIENT_SECRET'] = '4aaf9c47b21192af51b8f1b5430d53ef3aa58324'
+        _app.config["SECRET_KEY"] = "hello"
+        _app.config["RECAPTCHA_PUBLIC_KEY"] = "6Ldvd94SAAAAAIlZcypMyY7EoSwkvf9bWW-cp5o6"
+        _app.config["RECAPTCHA_PRIVATE_KEY"] = "6Ldvd94SAAAAADQ6e-pS_lEfgfyA6Zfe-kDCZFki"
 
 
 class OrgGithub(object):
@@ -278,35 +288,6 @@ def webhook():
                     Solution.create(url=_url, username=username)
 
     return ""
-
-
-# @app.route('/mentor', methods=['GET', 'POST'])
-# def mentor():
-#     form = CreateProjectForm()
-#     if request.method == 'POST':
-#         if form.validate_on_submit():
-#             url_components = urlparse(form.url.data)
-#             url_path = url_components.path.split("/")[1:]
-#             username = url_path[0]
-#
-#             if url_components.netloc != "github.com":
-#                 form.url.errors.append("Only Github URL is allowed")
-#             else:
-#                 _user = Mentor.get_or_none(Mentor.username == username)
-#                 if not _user:
-#                     form.url.errors.append("You are not a mentor yet. "
-#                                            "Please apply for mentor")
-#                 elif not _user.status == "verified":
-#                     if _user.status == "pending":
-#                         form.url.errors.append("You are not a verified mentor yet. "
-#                                                "Your application is under consideration.")
-#                     elif _user.status == "rejected":
-#                         form.url.errors.append(f"We are really sorry but your application"
-#                                                f" is rejected. Reason: {user.status_reason}")
-#                 else:
-#                     pass
-#     return render_template("mentor.html", form=form,
-#                            nav=nav)
 
 
 @app.route('/add-project', methods=['GET', 'POST'])
