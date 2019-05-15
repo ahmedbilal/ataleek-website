@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Add a Project{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf-8"
+            src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#projects').DataTable();
+        });
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img src="{{ user_info["avatar_url"] }}" class="card-img"/>
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {% if user_info["name"] %}
+                            {{ user_info["name"] }}
+                        {% else %}
+                            {{ user_info["login"] }}
+                        {% endif %}
+                    </h5>
+                    <p class="card-text">{{ user_info["bio"] }}</p>
+                    <p class="card-text">
+                    <h2>
+                        {% if user_status == "Mentor" %}
+                            <span class="badge badge-success">{{ user_status }}</span>
+                        {% elif solutions %}
+                            <span class="badge badge-dark">{{ user_status }}</span>
+                        {% endif %}
+                    </h2>
+                    <a href="{{ user_info["html_url"] }}">Click here to see Github Profile</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h4>Solutions</h4>
+    {% if solutions %}
+        <table id="students" class="table table-striped table-bordered dataTable">
+            <tbody>
+            <thead>
+            <tr>
+                <th>URL</th>
+                <th>Stars</th>
+            </tr>
+            </thead>
+            {% for solution in solutions %}
+                <tr>
+                    <td><a href="{{ solution.url }}">{{ solution.url }}</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        No Solution Found
+    {% endif %}
+{% endblock %}

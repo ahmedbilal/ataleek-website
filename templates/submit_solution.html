@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Submit Solution{% endblock %}
+{% block head %}
+    {{ super() }}
+
+{% endblock %}
+{% block content %}
+    <div class="jumbotron">
+        <h1 class="display-5">Submit Solution</h1>
+        <hr>
+        <blockquote class="blockquote">
+    <p class="mb-0">
+        In looking for people to hire, you look for three qualities:
+         integrity, intelligence, and energy. And if they don't have
+         the first, the other two will kill you.
+    </p>
+    <footer class="blockquote-footer">Warren Buffet</footer>
+    </blockquote>
+        <form method="post" class="needs-validation" novalidate>
+                {% for control in form %}
+                    {% if not loop.last %}
+                        <div class="form-row">
+                            {{ control.label }}
+                            {% if control.errors %}
+                                {{ control(class="form-control is-invalid") }}
+                            {% elif control.data and not control.errors %}
+                                {{ control(class="form-control is-valid") }}
+                            {% else %}
+                                {{ control(class="form-control") }}
+                            {% endif %}
+
+                            {% for error in control.errors %}
+                                <div class="invalid-feedback">
+                                  {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+                {% endfor %}
+            {{ form.csrf_token }}
+        <br>
+        <div class="form-row">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        </form>
+        <p class="lead">
+
+        </p>
+    </div>
+{% endblock %}

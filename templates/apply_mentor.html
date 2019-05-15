@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Application For Mentorship{% endblock %}
+{% block head %}
+    {{ super() }}
+
+{% endblock %}
+{% block content %}
+    <div class="jumbotron">
+        <h1 class="display-4">Apply for Mentorship</h1>
+
+        <p class="lead">
+            We try our best to select talented people as mentors. You can apply for mentorship
+            through your Github account. We review your Github's profile and your public work
+            on Github to ensure that you are good fit for being mentor. It usually takes 1 week
+            to process application. We consider the following things while considering an application.
+            <ol>
+                <li>Amount and Quality of Work</li>
+                <li>Amount and Quality of Code Review</li>
+                <li>Communication Skills</li>
+            </ol>
+            <form method="post">
+                <button class="btn btn-primary btn-lg" type="submit">Apply/Check Status</button>
+            </form>
+        </p>
+        <hr class="my-4">
+        <p><a href="">Click Here</a> if you want to become a mentor?</p>
+    </div>
+{% endblock %}

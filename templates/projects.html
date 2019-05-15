@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Projects{% endblock %}
+{% block head %}
+    {{ super() }}
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready( function () {
+        $('#projects').DataTable();
+    } );
+    </script>
+{% endblock %}
+{% block content %}
+    <h1 class="display-5">Projects</h1>
+    <hr>
+    <p class="lead">
+    These projects are problems faced by people in Real World So, solution to these problems
+        would have impact in Real World. These problems are verified by our mentors for quality.
+    </p>
+    <table id="projects" class="table table-striped table-bordered dataTable">
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Language</th>
+                <th>Topics</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for project in projects %}
+            <tr>
+                <td><a href="{{ project.html_url }}">{{ project.name }}</a></td>
+                <td>{{ project.description }}</td>
+                <td>{{ project.language }}</td>
+                <td>{{ project.topics }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
