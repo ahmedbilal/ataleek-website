@@ -198,7 +198,7 @@ def apply_for_mentor():
 
 @app.route('/apply', methods=['GET', 'POST'])
 @login_required
-def apply_for_mentor():
+def apply_for_mentorship():
     if request.method == "POST":
         user_info = github.get("/user", access_token=g.user.github_access_token)
         print("Userinfo", user_info["login"])
@@ -379,6 +379,11 @@ def user_profile(username):
     return render_template("profile.html", user=username,
                            solutions=solutions_by_user,
                            user_info=user_info, user_status=user_status)
+
+
+@app.route('/student')
+def student():
+    return render_template("student.html")
 
 
 if __name__ == '__main__':

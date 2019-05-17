@@ -12,8 +12,8 @@
         <hr class="my-4">
         <p>What do you consider yourself?</p>
         <p class="lead">
-            <a href="" class="btn btn-primary btn-lg">Student</a>
-            or <a href="/apply" class="btn btn-success btn-lg">Mentor</a>
+            <a href="{{ url_for('student') }}" class="btn btn-primary btn-lg">Student</a>
+            or <a href="{{ url_for('apply_for_mentorship') }}" class="btn btn-success btn-lg">Mentor</a>
         </p>
     </div>
 {% endblock %}
