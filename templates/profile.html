@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Add a Project{% endblock %}
+{% block title %}{{ user_info["name"] }} Profile{% endblock %}
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
@@ -17,7 +17,7 @@
     <div class="card mb-3" style="max-width: 540px;">
         <div class="row no-gutters">
             <div class="col-md-4">
-                <img src="{{ user_info["avatar_url"] }}" class="card-img"/>
+                <img src="{{ user_info["avatar_url"] }}" alt="{{ user_info['login'] }}'s avatar" class="card-img"/>
             </div>
             <div class="col-md-8">
                 <div class="card-body">
@@ -46,13 +46,13 @@
     <h4>Solutions</h4>
     {% if solutions %}
         <table id="students" class="table table-striped table-bordered dataTable">
-            <tbody>
             <thead>
             <tr>
                 <th>URL</th>
                 <th>Stars</th>
             </tr>
             </thead>
+            <tbody>
             {% for solution in solutions %}
                 <tr>
                     <td><a href="{{ solution.url }}">{{ solution.url }}</a></td>

@@ -25,7 +25,6 @@ from models import User, Solution, Mentor
 
 nav = Navigation()
 nav.add("index", "Home", "/")
-nav.add("add_project", "Add a Project", "/add-project")
 nav.add("projects", "Projects", "/projects")
 nav.add("submit_solution", "Submit Solution", "/submit-solution")
 
@@ -371,7 +370,7 @@ def search(query):
 @app.route('/user/<string:username>', methods=["GET"])
 def user_profile(username):
     solutions_by_user = Solution.select().where(Solution.username == username)
-    user_info = github.get(f"/users/{username}")
+    user_info = org_github.get(f"/users/{username}")
     user_status = "Student"
     if org_github.is_member(username):
         user_status = "Mentor"
