@@ -1,6 +1,10 @@
+from os.path import join, dirname
+
 from peewee import *
 
-db = SqliteDatabase('database.db')
+project_dir = dirname(__file__)
+db = SqliteDatabase(join(project_dir, 'database.db'))
+
 db.connect()
 
 
