@@ -9,6 +9,7 @@ from functools import reduce
 from urllib.parse import urljoin
 
 import requests
+from dotenv import load_dotenv
 from flask import (Flask, render_template, request,
                    url_for, flash, redirect, session,
                    g)
@@ -23,31 +24,22 @@ from helpers import (Navigation, login_required,
                      get_username_and_repo)
 from models import User, Solution, Mentor
 
+load_dotenv()
+
 nav = Navigation()
 nav.add("index", "Home", "/")
 nav.add("projects", "Projects", "/projects")
 nav.add("submit_solution", "Submit Solution", "/submit-solution")
 
 # Constants
-ABK_ACCESS_TOKEN = "41168124b046fbd6485d78ac2f65a41187ef304d"
+ADMIN_ACCESS_TOKEN = os.getenv("ADMIN_ACCESS_TOKEN")
 ADMIN = "ahmedbilal"
 
-environment_status = os.getenv("environment")
 
-if environment_status == "cloud":
-    def configure_app(_app):
-        _app.config['GITHUB_CLIENT_ID'] = 'ee6f0a5e76b99a909c75'
-        _app.config['GITHUB_CLIENT_SECRET'] = 'b876e39b1b6fa85180e03f19025fcf8cf41bfc71'
-        _app.config["SECRET_KEY"] = "hello"
-        _app.config["RECAPTCHA_PUBLIC_KEY"] = "6Ldvd94SAAAAAIlZcypMyY7EoSwkvf9bWW-cp5o6"
-        _app.config["RECAPTCHA_PRIVATE_KEY"] = "6Ldvd94SAAAAADQ6e-pS_lEfgfyA6Zfe-kDCZFki"
-else:
-    def configure_app(_app):
-        _app.config['GITHUB_CLIENT_ID'] = '3c465736912b5ed0c14f'
-        _app.config['GITHUB_CLIENT_SECRET'] = '4aaf9c47b21192af51b8f1b5430d53ef3aa58324'
-        _app.config["SECRET_KEY"] = "hello"
-        _app.config["RECAPTCHA_PUBLIC_KEY"] = "6Ldvd94SAAAAAIlZcypMyY7EoSwkvf9bWW-cp5o6"
-        _app.config["RECAPTCHA_PRIVATE_KEY"] = "6Ldvd94SAAAAADQ6e-pS_lEfgfyA6Zfe-kDCZFki"
+def configure_app(_app):
+    _app.config['GITHUB_CLIENT_ID'] = os.getenv("GITHUB_CLIENT_ID")
+    _app.config['GITHUB_CLIENT_SECRET'] = os.getenv("GITHUB_CLIENT_SECRET")
+    _app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
 
 class OrgGithub(object):
@@ -57,7 +49,7 @@ class OrgGithub(object):
         self.client_id = _app.config.get("GITHUB_CLIENT_ID")
         self.session = requests.session()
         self.organization = organization
-        self.organization_access_token = "41168124b046fbd6485d78ac2f65a41187ef304d"
+        self.organization_access_token = ADMIN_ACCESS_TOKEN
 
     def is_member(self, username):
         return self.get(f"/orgs/ataleek/public_members/{username}") is not None
@@ -127,20 +119,6 @@ def index():
 
 @app.route('/')
 def index():
-    # oauth_token = User.get_or_none(id=session.get("user_id", None)).github_access_token
-    # print(oauth_token)
-    # git_user = Github2(oauth_token).get_user()
-    # for repo in git_user.get_repos():
-    #     print(repo.name)
-    #     print(repo.html_url)
-    #     # print(dir(repo))
-
-    # _user = User.get_or_none(id=session.get("user_id", None))
-    # github_access_token = None
-    # if _user:
-    #     github_access_token = _user.github_access_token
-    #     git_user = Github2(github_access_token)
-    #     repo = git_user.get_repo("ataleek/ataleek")
     return render_template("index.html", nav=nav)
 
 
@@ -150,11 +128,6 @@ def login(next_url):
     redirect_uri = url_for("authorized", next=next_url)
     print(redirect_uri)
     return github.authorize(scope="public_repo")
-    # if session.get('user_id', None) is None:
-    #     return github.authorize()
-    # else:
-    #     flash("You are already logged in")
-    #     return redirect(url_for('index'))
 
 
 @app.route('/logout')

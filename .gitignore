@@ -2,3 +2,5 @@
 __pycache__/
 venv/
 webhook.json
+.env
+database.db
