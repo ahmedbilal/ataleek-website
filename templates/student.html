@@ -6,58 +6,39 @@
 {% block content %}
     <div>
         <h1 class="display-4">I am a Student</h1>
+        <p class="lead">
+            We created this platform for <b>You!</b>. We are also student. We know what are problems
+            that could be a problem for us to get hired.Ataleek provides you with
+            <span class="badge badge-primary">real world projects</span> and
+            <span class="badge badge-success">friendly mentors</span>
+        </p>
         <div class="row">
             <div class="col-md-12">
                 <table class="table table-bordered">
                     <tbody>
-                    <tr class="table-danger">
+                    <tr class="table-secondary">
                         <td class="text-center">
                             <button class="btn btn-primary btn-lg rounded-circle">1</button>
                         </td>
-                        <td class="font-weight-bold lead">We created this platform for You!.</td>
-
-                    </tr>
-                    <tr class="table-warning">
-                        <td class="text-center">
-                            <button class="btn btn-primary btn-lg rounded-circle">2</button>
-                        </td>
-                        <td class="font-weight-bold lead ">We are also student. We know what are problems
-                            that could be a problem for us to get hired.
-                        </td>
-                    </tr>
-                    <tr class="table-success">
-                        <td class="text-center">
-                            <button class="btn btn-primary btn-lg rounded-circle">3</button>
-                        </td>
-                        <td class="font-weight-bold lead">Ataleek provides you with
-                            <span class="badge badge-primary">real world projects</span> and
-                            <span class="badge badge-success">friendly mentors</span></td>
-                    </tr>
-                    <tr class="table-info">
-                        <td class="text-center">
-                            <button class="btn btn-primary btn-lg rounded-circle">4</button>
-                        </td>
-                        <td class="font-weight-bold lead">You work on projects of your liking which can be found
+                        <td class="lead">You work on projects of your liking which can be found
                             <a href="{{ url_for('list_projects') }}">here</a></td>
                     </tr>
 
                     <tr class="table-primary">
                         <td class="text-center">
-                            <button class="btn btn-primary btn-lg rounded-circle">5</button>
+                            <button class="btn btn-primary btn-lg rounded-circle">2</button>
                         </td>
-                        <td class="font-weight-bold lead">And when your solution is ready. Heads to <a
+                        <td class="lead">And when your solution is ready. Heads to <a
                                 href="{{ url_for('submit_solution') }}">Submit Solution</a></td>
                     </tr>
 
                     <tr class="table-warning">
                         <td class="text-center">
-                            <button class="btn btn-primary btn-lg rounded-circle">6</button>
+                            <button class="btn btn-primary btn-lg rounded-circle">3</button>
                         </td>
-                        <td class="font-weight-bold lead">Your work would be reviewed by our mentors on Github and you
-                            will be notified
-                            if any changes are required. After, the review is done and your work is accepted. It would
-                            be shown on your profile
-                            on Ataleek as well on Github.
+                        <td class="lead">Your work would be reviewed by our mentors on Github and you
+                            will be notified if any change in your code is required. After, the review is done and your
+                            work is accepted. It would be shown on your profile on Ataleek as well on Github.
                         </td>
                     </tr>
 

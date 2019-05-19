@@ -5,10 +5,21 @@
 {% endblock %}
 {% block content %}
     <div class="jumbotron">
-        <h1 class="display-4"> اتالیق<small class="text-muted">A CS-Student Mentoring Platform </small></h1>
+        <h1 class="display-4"> اتالیق
+            <small class="text-muted">A CS-Student Mentoring Platform</small>
+        </h1>
 
-        <p class="lead">Whether, you are professional or beginner in Computer Programming
-            <strong>We will help you grow.</strong> Start your journey here and see where it goes.</p>
+        <p class="lead">
+            It is not another "Programming Challenges" or "Coding Challenges" platform.
+            Here, you will work on problems that are faced by <em>Real People</em> in <em>Real World</em>.
+            It is not like <a href="https://www.codewars.com/">Codewars</a>,
+            <a href="https://www.codingame.com/home">CodinGame</a>,
+            <a href="https://www.hackerearth.com/">HackerEarth</a>,
+            <a href="https://www.hackerrank.com/">HackerRank</a>.
+            Neither, it is <a href="https://summerofcode.withgoogle.com/">Google Summer of Code</a> or
+            <a href="https://hacktoberfest.digitalocean.com/">Hacktoberfest</a>.
+        <h3>Its different! See youself</h3>
+        </p>
         <hr class="my-4">
         <p>What do you consider yourself?</p>
         <p class="lead">
@@ -16,4 +27,5 @@
             or <a href="{{ url_for('apply_for_mentorship') }}" class="btn btn-success btn-lg">Mentor</a>
         </p>
     </div>
+
 {% endblock %}

@@ -144,8 +144,11 @@ def index():
     return render_template("index.html", nav=nav)
 
 
-@app.route('/login')
-def login():
+@app.route('/login', defaults={"next_url": "/"})
+@app.route('/login/<path:next_url>')
+def login(next_url):
+    redirect_uri = url_for("authorized", next=next_url)
+    print(redirect_uri)
     return github.authorize(scope="public_repo")
     # if session.get('user_id', None) is None:
     #     return github.authorize()
@@ -156,16 +159,18 @@ def login():
 
 @app.route('/logout')
 def logout():
+    User.delete_by_id(session.get('user_id'))
+
     session.pop('user_id', None)
     g.user = None
     flash("User Logged Out")
-    return redirect(url_for('index'))
+    return redirect(url_for("index"))
 
 
 @app.route('/github-callback')
 @github.authorized_handler
 def authorized(oauth_token):
-    next_url = request.args.get('next') or url_for('index')
+    next_url = request.args.get('next_url') or url_for('index')
     if oauth_token is None:
         flash("Authorization failed.")
         return redirect(next_url)
@@ -383,7 +388,7 @@ def user_profile(username):
 
 @app.route('/student')
 def student():
-    return render_template("student.html")
+    return render_template("student.html", nav=nav)
 
 
 if __name__ == '__main__':

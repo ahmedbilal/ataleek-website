@@ -9,10 +9,20 @@
 
 
     <title>{% block title %}{% endblock %} | Ataleek</title>
+        <style>
+            body {
+                min-height: 100vh;
+            }
+
+            .flex-fill {
+                flex: 1 1 auto;
+            }
+        </style>
     {% endblock %}
 </head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<body class="d-flex flex-column">
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="/">Ataleek</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -36,7 +46,8 @@
       {#    </form>#}
   </div>
 </nav>
-
+</header>
+<main class="container-fluid flex-fill">
     <div id="content">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -59,9 +70,12 @@
         {% endwith %}
 
         {% block content %}{% endblock %}</div>
+</main>
+<footer>
     <div id="footer">
         {% block footer %}
         {% endblock %}
     </div>
+</footer>
 </body>
 </html>

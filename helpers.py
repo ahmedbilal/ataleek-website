@@ -1,8 +1,9 @@
-from functools import wraps
-from flask import (request, url_for, redirect, session)
 from dataclasses import dataclass
 from datetime import datetime
+from functools import wraps
 from urllib.parse import urlparse
+
+from flask import (request, url_for, redirect, session)
 
 
 class Link(object):
@@ -29,7 +30,7 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not session.get("user_id", None):
-            return redirect(url_for('login', next=request.url))
+            return redirect(url_for('login', next_url=request.url))
         return f(*args, **kwargs)
     return decorated_function
 
