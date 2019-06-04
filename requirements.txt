@@ -6,3 +6,4 @@ PyGithub
 Flask-Bootstrap4
 requests
 python-dotenv
+Flask-Markdown

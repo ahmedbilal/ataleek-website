@@ -1,7 +1,4 @@
-# TODO:
-#       - use environment variables before uploading it anywhere
-#       - remove my own access token from index()
-
+import base64
 import json
 import os
 from datetime import datetime
@@ -12,12 +9,12 @@ import requests
 from dotenv import load_dotenv
 from flask import (Flask, render_template, request,
                    url_for, flash, redirect, session,
-                   g)
+                   g, abort)
 from flask_bootstrap import Bootstrap
 from flask_github import GitHub
-from github import Github as Github2
+from flaskext.markdown import Markdown
 
-from forms import CreateProjectForm, SubmitSolutionForm
+from forms import CreateProjectForm
 from helpers import (Navigation, login_required,
                      check_project_files,
                      Project, Comment, github_repo_ls,
@@ -29,7 +26,7 @@ load_dotenv()
 nav = Navigation()
 nav.add("index", "Home", "/")
 nav.add("projects", "Projects", "/projects")
-nav.add("submit_solution", "Submit Solution", "/submit-solution")
+# nav.add("submit_solution", "Submit Solution", "/submit-solution")
 
 # Constants
 ADMIN_ACCESS_TOKEN = os.getenv("ADMIN_ACCESS_TOKEN")
@@ -91,7 +88,7 @@ class OrgGithub(object):
                                "labels": data.get("labels") or ""})
 
     def ls_projects(self):
-        organization_repos = ["ataleek"]
+        organization_repos = ["ataleek", "ataleek-cli"]
         repositories = list(filter(lambda r: not r["private"] and
                                    r["name"] not in organization_repos,
                                    self.get_repos()))
@@ -103,6 +100,8 @@ class OrgGithub(object):
 
 app = Flask(__name__)
 configure_app(app)
+Markdown(app)
+
 
 github = GitHub(app)
 Bootstrap(app)
@@ -296,35 +295,35 @@ def list_projects():
     return render_template("projects.html", projects=org_github.ls_projects(), nav=nav)
 
 
-@app.route('/submit-solution', methods=["GET", "POST"])
-@login_required
-def submit_solution():
-    user = User.get_or_none(id=session.get("user_id", None))
-
-    form = SubmitSolutionForm(user=user, projects=org_github.ls_projects())
-
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            _errors = check_project_files(github_repo_ls(github, form.repository.data))
-            form.repository.errors += _errors
-            if not _errors:
-                username, repo = get_username_and_repo(form.repository.data)
-                github_user = Github2(user.github_access_token).get_user()
-                github_repo = github_user.get_repo(repo)
-                response = {'url': ""}
-                try:
-                    response = github.post(f"/repos/{github_repo.parent.full_name}/pulls",
-                                           data={"title": "Solution",
-                                                 "head": f"{username}:master",
-                                                 "base": "master"},
-                                           access_token=user.github_access_token)
-                except:
-                    form.repository.errors += ["""Make sure that you have incorporated
-                     some changes in your solution repository"""]
-                if not form.repository.errors:
-                    flash(f"Your solution is under review at {response['url']}")
-
-    return render_template("submit_solution.html", nav=nav, form=form)
+# @app.route('/submit-solution', methods=["GET", "POST"])
+# @login_required
+# def submit_solution():
+#     user = User.get_or_none(id=session.get("user_id", None))
+#
+#     form = SubmitSolutionForm(user=user, projects=org_github.ls_projects())
+#
+#     if request.method == 'POST':
+#         if form.validate_on_submit():
+#             _errors = check_project_files(github_repo_ls(github, form.repository.data))
+#             form.repository.errors += _errors
+#             if not _errors:
+#                 username, repo = get_username_and_repo(form.repository.data)
+#                 github_user = Github2(user.github_access_token).get_user()
+#                 github_repo = github_user.get_repo(repo)
+#                 response = {'url': ""}
+#                 try:
+#                     response = github.post(f"/repos/{github_repo.parent.full_name}/pulls",
+#                                            data={"title": "Solution",
+#                                                  "head": f"{username}:master",
+#                                                  "base": "master"},
+#                                            access_token=user.github_access_token)
+#                 except:
+#                     form.repository.errors += ["""Make sure that you have incorporated
+#                      some changes in your solution repository"""]
+#                 if not form.repository.errors:
+#                     flash(f"Your solution is under review at {response['url']}")
+#
+#     return render_template("submit_solution.html", nav=nav, form=form)
 
 
 @app.route('/search/<string:query>', methods=["GET"])
@@ -362,6 +361,17 @@ def user_profile(username):
 @app.route('/student')
 def student():
     return render_template("student.html", nav=nav)
+
+
+@app.route('/project/<path:title>', methods=["GET"])
+def project_detail(title):
+    response = org_github.get(f"/repos/{title}/readme")
+    if response:
+        readme_content = response['content']
+        readme_content = base64.b64decode(readme_content).decode("utf-8")
+        readme_content = readme_content.replace("`", "'")
+        return render_template("project_detail.html", readme=readme_content, title=title)
+    abort(404)
 
 
 if __name__ == '__main__':

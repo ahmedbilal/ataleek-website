@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Projects{% endblock %}
+{% block head %}
+    {{ super() }}
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf-8"
+            src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#projects').DataTable();
+        });
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
+    <style>
+        blink, .blink {
+
+            -webkit-animation: blink 1s step-end infinite;
+
+            -moz-animation: blink 1s step-end infinite;
+
+            -o-animation: blink 1s step-end infinite;
+
+            animation: blink 1s step-end infinite;
+
+        }
+
+
+        @-webkit-keyframes blink {
+
+            67% {
+                opacity: 0
+            }
+
+        }
+
+
+        @-moz-keyframes blink {
+
+            67% {
+                opacity: 0
+            }
+
+        }
+
+
+        @-o-keyframes blink {
+
+            67% {
+                opacity: 0
+            }
+
+        }
+
+
+        @keyframes blink {
+
+            67% {
+                opacity: 0
+            }
+
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <script type="text/javascript">
+        window.onload = function () {
+            var converter = new showdown.Converter();
+            var content = `{{ readme }}`;
+            var html = converter.makeHtml(content);
+            document.getElementById("meow").innerHTML = html;
+        }
+
+    </script>
+    <div class="row">
+        <div class="col-md-9">
+            <div id="meow" class="lead well well-lg">
+
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Commands</h3>
+                </div>
+                <div class="panel-body lead">
+                    <p class="text-danger blink">Make sure you have installed <a class="text-info"
+                                                                                 href="https://pypi.org/project/ataleek/"
+                                                                                 target="_blank">ataleek package</a>
+                        first.</p>
+                    <p>Run the following commands on the terminal</p>
+                    <ul>
+                        <li>To get the project
+                            <code>ataleek get {{ title }}</code>
+                        </li>
+                        <li>Now, you have copy of project specification, initial code, tests. So, you should start
+                            working on it.
+                        </li>
+                        <li>To submit the solution, <p class="text-warning">first make sure you incorporated some
+                            changes
+                            and commited and pushed them to your remote repo.</p> Then, run
+                            <code>ataleek submit</code> into the project directory.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -6,7 +6,7 @@
 {% block content %}
     <div class="jumbotron">
         <h1 class="display-4"> اتالیق
-            <small class="text-muted">A CS-Student Mentoring Platform</small>
+            <small class="text-warning">A CS-Student Mentoring Platform</small>
         </h1>
 
         <p class="lead">
@@ -24,7 +24,7 @@
         <p>What do you consider yourself?</p>
         <p class="lead">
             <a href="{{ url_for('student') }}" class="btn btn-primary btn-lg">Student</a>
-            or <a href="{{ url_for('apply_for_mentorship') }}" class="btn btn-success btn-lg">Mentor</a>
+            or <a href="{{ url_for('apply_for_mentorship') }}" class="btn btn-danger btn-lg">Mentor</a>
         </p>
     </div>
 

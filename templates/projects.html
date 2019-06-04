@@ -32,7 +32,7 @@
         <tbody>
             {% for project in projects %}
             <tr>
-                <td><a href="{{ project.html_url }}">{{ project.name }}</a></td>
+                <td><a href="/project/{{ project.full_name }}">{{ project.name }}</a></td>
                 <td>{{ project.description }}</td>
                 <td>{{ project.language }}</td>
                 <td>{{ project.topics }}</td>
