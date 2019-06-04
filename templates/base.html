@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     {% block head %}
-        <link rel="stylesheet" href="/static/hacker.css">
+        <link rel="stylesheet" href="https://bootswatch.com/4/sketchy/bootstrap.css">
     <script src="/static/jquery-3.3.1.slim.min.js"></script>
     <script src="/static/popper.min.js"></script>
     <script src="/static/bootstrap.min.js"></script>
@@ -11,7 +11,9 @@
     <title>{% block title %}{% endblock %} | Ataleek</title>
         <style>
             body {
-                min-height: 100vh;
+                zoom: 1.5;
+                -moz-transform: scale(1.5);
+                -moz-transform-origin: 0 0;
             }
 
             .flex-fill {
@@ -20,61 +22,62 @@
         </style>
     {% endblock %}
 </head>
-<body class="d-flex flex-column">
+<body>
 <header>
-    <nav class="navbar navbar-default navbar-static-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                        aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">Ataleek</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    {% for link in nav %}
-                        {% if url_for(request.endpoint) == nav[link].link %}
-                            <li class="nav-item active">
-                                {% else %}
-                            <li class="nav-item">
-                        {% endif %}
-                    <a class="nav-link" href={{ nav[link].link }}>{{ nav[link].display_name }}</a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
+    {#    <nav class="navbar navbar-default navbar-static-top">#}
+    {#        <div class="container-fluid">#}
+    {#            <div class="navbar-header">#}
+    {#                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"#}
+    {#                        aria-expanded="false" aria-controls="navbar">#}
+    {#                    <span class="sr-only">Toggle navigation</span>#}
+    {#                    <span class="icon-bar"></span>#}
+    {#                    <span class="icon-bar"></span>#}
+    {#                    <span class="icon-bar"></span>#}
+    {#                </button>#}
+    {#                <a class="navbar-brand" href="/">Ataleek</a>#}
+    {#            </div>#}
+    {#            <div id="navbar" class="navbar-collapse collapse">#}
+    {#                <ul class="nav navbar-nav">#}
+    {#                    {% for link in nav %}#}
+    {#                        {% if url_for(request.endpoint) == nav[link].link %}#}
+    {#                            <li class="nav-item active">#}
+    {#                                {% else %}#}
+    {#                            <li class="nav-item">#}
+    {#                        {% endif %}#}
+    {#                    <a class="nav-link" href={{ nav[link].link }}>{{ nav[link].display_name }}</a>#}
+    {#                    </li>#}
+    {#                    {% endfor %}#}
+    {#                </ul>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </nav>#}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+        <a class="navbar-brand" href="/">Ataleek</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                {% for link in nav %}
+                    {% if url_for(request.endpoint) == nav[link].link %}
+                        <li class="nav-item active">
+                            {% else %}
+                        <li class="nav-item">
+                    {% endif %}
+                <a class="nav-link" href={{ nav[link].link }}>{{ nav[link].display_name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
         </div>
     </nav>
-    {#    <nav class="navbar navbar-expand-lg navbar-dark bg-danger">#}
-    {#  <a class="navbar-brand" href="/">Ataleek</a>#}
-    {#  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">#}
-    {#    <span class="navbar-toggler-icon"></span>#}
-    {#  </button>#}
-    {##}
-    {#  <div class="collapse navbar-collapse" id="navbarSupportedContent">#}
-    {#    <ul class="navbar-nav mr-auto">#}
-    {#        {% for link in nav %}#}
-    {#        {% if url_for(request.endpoint) == nav[link].link %}#}
-    {#        <li class="nav-item active">#}
-    {#        {% else %}#}
-    {#        <li class="nav-item">#}
-    {#        {% endif %}#}
-    {#            <a class="nav-link" href={{ nav[link].link }}>{{ nav[link].display_name }}</a>#}
-    {#          </li>#}
-    {#        {% endfor %}#}
-    {#    </ul>#}
-      {#    <form class="form-inline my-2 my-lg-0">#}
-      {#      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">#}
-      {#      <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>#}
-      {#    </form>#}
-    {#  </div>#}
-    {#</nav>#}
 </header>
-<main class="container-fluid flex-fill">
+<div class="container-fluid">
     <div id="content">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -97,7 +100,7 @@
         {% endwith %}
 
         {% block content %}{% endblock %}</div>
-</main>
+</div>
 <footer>
     <div id="footer">
         {% block footer %}
