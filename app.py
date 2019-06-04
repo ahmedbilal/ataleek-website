@@ -12,7 +12,6 @@ from flask import (Flask, render_template, request,
                    g, abort)
 from flask_bootstrap import Bootstrap
 from flask_github import GitHub
-from flaskext.markdown import Markdown
 
 from forms import CreateProjectForm
 from helpers import (Navigation, login_required,
@@ -100,7 +99,6 @@ class OrgGithub(object):
 
 app = Flask(__name__)
 configure_app(app)
-Markdown(app)
 
 
 github = GitHub(app)
